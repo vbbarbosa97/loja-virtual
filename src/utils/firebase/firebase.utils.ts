@@ -3,9 +3,10 @@ import {
   getAuth,
   GoogleAuthProvider,
   signInWithPopup,
+  signInWithRedirect,
   UserCredential,
 } from "firebase/auth";
-import { doc, getFirestore, getDoc } from "firebase/firestore";
+import { doc, getFirestore, getDoc, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCg8r7z5c3vcCivq765kUisO68hJ5bdADI",
@@ -18,24 +19,42 @@ const firebaseConfig = {
 
 export const firebaseApp = initializeApp(firebaseConfig);
 
-const provider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider();
 
-provider.setCustomParameters({
+googleProvider.setCustomParameters({
   prompt: "select_account",
 });
 
 export const auth = getAuth();
-
-export const signInWithGooglePopup = () => signInWithPopup(auth, provider);
+export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
+export const signInWithGoogleRedirect = () =>
+  signInWithRedirect(auth, googleProvider);
 
 export const db = getFirestore();
 
-export const createUserDocumentFromAuth = async (user: UserCredential) => {
-  const userDocRef = doc(db, "users", user.user.uid);
-
-  console.log(userDocRef);
+export const createUserDocumentFromAuth = async (
+  userCredential: UserCredential
+) => {
+  const userDocRef = doc(db, "users", userCredential.user.uid);
 
   const userSnapshot = await getDoc(userDocRef);
 
-  console.log(userSnapshot.exists());
+  const notExist = !userSnapshot.exists();
+
+  if (notExist) {
+    const { displayName, email } = userCredential.user;
+    const createdAt = new Date();
+
+    try {
+      await setDoc(userDocRef, {
+        displayName,
+        email,
+        createdAt,
+      });
+    } catch (error: any) {
+      console.error("Erro ao criar usuario", error.message);
+    }
+  }
+
+  return userDocRef;
 };
