@@ -1,12 +1,13 @@
 import { initializeApp } from "firebase/app";
 import {
+  createUserWithEmailAndPassword,
   getAuth,
   GoogleAuthProvider,
+  signInWithEmailAndPassword,
   signInWithPopup,
-  signInWithRedirect,
   UserCredential,
 } from "firebase/auth";
-import { doc, getFirestore, getDoc, setDoc } from "firebase/firestore";
+import { doc, getDoc, getFirestore, setDoc } from "firebase/firestore";
 
 const firebaseConfig = {
   apiKey: "AIzaSyCg8r7z5c3vcCivq765kUisO68hJ5bdADI",
@@ -17,7 +18,7 @@ const firebaseConfig = {
   appId: "1:598011997245:web:0eb5de6a6b307898920e54",
 };
 
-export const firebaseApp = initializeApp(firebaseConfig);
+initializeApp(firebaseConfig);
 
 const googleProvider = new GoogleAuthProvider();
 
@@ -26,14 +27,15 @@ googleProvider.setCustomParameters({
 });
 
 export const auth = getAuth();
-export const signInWithGooglePopup = () => signInWithPopup(auth, googleProvider);
-export const signInWithGoogleRedirect = () =>
-  signInWithRedirect(auth, googleProvider);
+
+export const signInWithGooglePopup = () =>
+  signInWithPopup(auth, googleProvider);
 
 export const db = getFirestore();
 
 export const createUserDocumentFromAuth = async (
-  userCredential: UserCredential
+  userCredential: UserCredential,
+  displayNameProps?: string
 ) => {
   const userDocRef = doc(db, "users", userCredential.user.uid);
 
@@ -47,7 +49,7 @@ export const createUserDocumentFromAuth = async (
 
     try {
       await setDoc(userDocRef, {
-        displayName,
+        displayName: displayName ?? displayNameProps,
         email,
         createdAt,
       });
@@ -57,4 +59,22 @@ export const createUserDocumentFromAuth = async (
   }
 
   return userDocRef;
+};
+
+export const createAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
+  const response = await createUserWithEmailAndPassword(auth, email, password);
+
+  return response;
+};
+
+export const signInAuthUserWithEmailAndPassword = async (
+  email: string,
+  password: string
+) => {
+  const response = await signInWithEmailAndPassword(auth, email, password);
+
+  return response;
 };
