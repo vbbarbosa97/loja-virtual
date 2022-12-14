@@ -2,7 +2,7 @@ import { User } from "firebase/auth";
 import { createContext, ReactNode, useEffect, useState } from "react";
 import {
   createUserDocumentFromAuth,
-  onAuthStateChangedListener
+  onAuthStateChangedListener,
 } from "../utils/firebase/firebase.utils";
 
 type UserContextProps = {
@@ -10,14 +10,14 @@ type UserContextProps = {
   setUser: (user: User | null) => void;
 };
 
+type UserProviderProps = {
+  children: ReactNode;
+};
+
 export const UserContext = createContext<UserContextProps>({
   currentUser: null,
   setUser: () => {},
 });
-
-type UserProviderProps = {
-  children: ReactNode;
-};
 
 export const UserProvider = ({ children }: UserProviderProps) => {
   const [currentUser, setCurrentUser] = useState<User | null>(null);
