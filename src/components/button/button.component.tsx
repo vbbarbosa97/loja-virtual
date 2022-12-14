@@ -6,9 +6,11 @@ type Props = {
   typeClass?: "google-sign-in" | "inverted";
 } & ComponentPropsWithoutRef<"button">;
 
-const Button = ({ children, typeClass }: Props) => {
+const Button = ({ children, typeClass, ...rest }: Props) => {
   return (
-    <button className={`button-container ${typeClass}`}>{children}</button>
+    <button className={`button-container ${typeClass}`} {...rest}>
+      {children}
+    </button>
   );
 };
 

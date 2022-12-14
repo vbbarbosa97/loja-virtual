@@ -45,12 +45,12 @@ const SignUpForm = () => {
     }
 
     try {
-      const response = await createAuthUserWithEmailAndPassword(
+      const { user } = await createAuthUserWithEmailAndPassword(
         email,
         password
       );
 
-      await createUserDocumentFromAuth(response, displayName);
+      await createUserDocumentFromAuth(user, displayName);
 
       resetFormfield();
     } catch (error: any) {
