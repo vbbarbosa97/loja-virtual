@@ -4,3 +4,7 @@ export type Product = {
   imageUrl: string;
   price: number;
 };
+
+export type ProductCart = {
+  quantity: number;
+} & Product;
