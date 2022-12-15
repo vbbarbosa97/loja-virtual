@@ -1,12 +1,6 @@
 import { createContext, ReactNode, useState } from "react";
+import { Product } from "../model/product.model";
 import PRODUCTS from "../shop-data.json";
-
-type Product = {
-  id: number;
-  name: string;
-  imageUrl: string;
-  price: number;
-};
 
 type ProductContextProps = {
   products: Product[];
@@ -25,6 +19,8 @@ export const ProductsProvider = ({ children }: ProductProviderProps) => {
   const value = { products };
 
   return (
-    <ProductsContext.Provider value={value}>{children}</ProductsContext.Provider>
+    <ProductsContext.Provider value={value}>
+      {children}
+    </ProductsContext.Provider>
   );
 };
