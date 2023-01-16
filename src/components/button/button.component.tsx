@@ -1,17 +1,32 @@
 import { ComponentPropsWithoutRef, ReactNode } from "react";
-import "./button.styles.scss";
+import {
+  BaseButton,
+  GoogleSignInButton,
+  InvertedButton,
+} from "./button.styles";
 
 type Props = {
   children: ReactNode;
-  typeClass?: "google-sign-in" | "inverted";
+  typeClass?: "google-sign-in" | "inverted" | "base";
 } & ComponentPropsWithoutRef<"button">;
 
+export const BUTTON_TYPE_CLASSES = {
+  base: "base",
+  google: "google-sign-in",
+  inverted: "inverted",
+};
+
+const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) =>
+  ({
+    [BUTTON_TYPE_CLASSES.base]: BaseButton,
+    [BUTTON_TYPE_CLASSES.google]: GoogleSignInButton,
+    [BUTTON_TYPE_CLASSES.inverted]: InvertedButton,
+  }[buttonType]);
+
 const Button = ({ children, typeClass, ...rest }: Props) => {
-  return (
-    <button className={`button-container ${typeClass}`} {...rest}>
-      {children}
-    </button>
-  );
+  const CustomButton = getButton(typeClass);
+
+  return <CustomButton {...rest}>{children}</CustomButton>;
 };
 
 export default Button;
