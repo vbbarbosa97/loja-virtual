@@ -1,6 +1,11 @@
-import { useContext } from "react";
-import { CartContext } from "../../context/cart.context";
+import { useDispatch, useSelector } from "react-redux";
 import { ProductCart } from "../../model/product.model";
+import {
+  addItemToCart,
+  clearItemFromCart,
+  removeItemFromCart,
+} from "../../store/cart/cart.action";
+import { selectCartItems } from "../../store/cart/cart.selector";
 import "./checkout-item.styles.scss";
 
 type Props = {
@@ -8,19 +13,20 @@ type Props = {
 };
 
 const CheckoutItem = ({ product }: Props) => {
-  const { clearItemFromCart, addItemToCart, removeItemToCart } =
-    useContext(CartContext);
+  const cartItems = useSelector(selectCartItems);
+
+  const dispatch = useDispatch();
 
   const removeItem = () => {
-    clearItemFromCart(product);
+    dispatch(clearItemFromCart(cartItems, product));
   };
 
   const incrementHandler = () => {
-    addItemToCart(product);
+    dispatch(addItemToCart(cartItems, product));
   };
 
   const decrementHandler = () => {
-    removeItemToCart(product);
+    dispatch(removeItemFromCart(cartItems, product));
   };
 
   return (
