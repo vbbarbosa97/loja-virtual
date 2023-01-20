@@ -1,11 +1,18 @@
+import { createSelector } from "reselect";
+
 //TODO:adicionar interface
-export const selectCategoriesMap = (state: any) => {
-  const categoriesMap = state.categories.categories.reduce(
-    (acc: any, { title, items }: any) => {
+const selectCategoryReducer = (state: any) => state.categories;
+
+export const selectCategories = createSelector(
+  [selectCategoryReducer],
+  (categoriesSlice: any) => categoriesSlice.categories
+);
+
+export const selectCategoriesMap = createSelector(
+  [selectCategories],
+  (categories) =>
+    categories.reduce((acc: any, { title, items }: any) => {
       acc[title.toLowerCase()] = items;
       return acc;
-    },
-    {}
-  );
-  return categoriesMap;
-};
+    }, {})
+);
