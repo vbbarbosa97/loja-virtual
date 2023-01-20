@@ -72,12 +72,9 @@ export const getCategoriesAndDocuments = async () => {
 
   const querySnapshot = await getDocs(q);
 
-  const categoryMaps = querySnapshot.docs.reduce((acc: Acc, docSnapshot) => {
-    const { title, items } = docSnapshot.data();
-    acc[title.toLowerCase() as string] = items;
-
-    return acc;
-  }, {});
+  const categoryMaps = querySnapshot.docs.map((docsnapshot) =>
+    docsnapshot.data()
+  );
 
   return categoryMaps;
 };
