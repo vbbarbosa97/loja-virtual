@@ -10,7 +10,7 @@ const Category = () => {
   const { category } = useParams();
   const categoriesMap = useSelector(selectCategoriesMap);
 
-  const [products, setProducts] = useState<ItemShop[]>([]);
+  const [products, setProducts] = useState<ItemShop[]>(categoriesMap[category!]);
 
   useEffect(() => {
     if (category && categoriesMap) {
