@@ -3,14 +3,21 @@ import { useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
 import ProductCard from "../../components/product-card/product-card.component";
 import { ItemShop } from "../../shop-data";
-import { selectCategoriesMap } from "../../store/categories/categories.selector";
+import {
+  selectCategoriesIsLoading,
+  selectCategoriesMap,
+} from "../../store/categories/categories.selector";
 import "./category.styles.scss";
+import Spinner from "../../components/spinner/spinner.component";
 
 const Category = () => {
   const { category } = useParams();
   const categoriesMap = useSelector(selectCategoriesMap);
+  const isLoading = useSelector(selectCategoriesIsLoading);
 
-  const [products, setProducts] = useState<ItemShop[]>(categoriesMap[category!]);
+  const [products, setProducts] = useState<ItemShop[]>(
+    categoriesMap[category!]
+  );
 
   useEffect(() => {
     if (category && categoriesMap) {
@@ -22,12 +29,16 @@ const Category = () => {
   return (
     <>
       <h2 className="category-title">{category?.toUpperCase()}</h2>
-      <div className="category-container">
-        {Children.toArray(
-          products &&
-            products.map((product) => <ProductCard product={product} />)
-        )}
-      </div>
+      {isLoading ? (
+        <Spinner />
+      ) : (
+        <div className="category-container">
+          {Children.toArray(
+            products &&
+              products.map((product) => <ProductCard product={product} />)
+          )}
+        </div>
+      )}
     </>
   );
 };

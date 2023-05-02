@@ -62,10 +62,6 @@ export const addCollectionAndDocuments = async (
   await batch.commit();
 };
 
-type Acc = {
-  [key: string]: [];
-};
-
 export const getCategoriesAndDocuments = async () => {
   const collectionRef = collection(db, "categories");
   const q = query(collectionRef);
