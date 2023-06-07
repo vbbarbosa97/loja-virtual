@@ -3,11 +3,13 @@ import {
   BaseButton,
   GoogleSignInButton,
   InvertedButton,
+  SpinnerContainer,
 } from "./button.styles";
 
 type Props = {
   children: ReactNode;
   typeClass?: "google-sign-in" | "inverted" | "base";
+  isLoading?: boolean;
 } & ComponentPropsWithoutRef<"button">;
 
 export const BUTTON_TYPE_CLASSES = {
@@ -23,10 +25,15 @@ const getButton = (buttonType = BUTTON_TYPE_CLASSES.base) =>
     [BUTTON_TYPE_CLASSES.inverted]: InvertedButton,
   }[buttonType]);
 
-const Button = ({ children, typeClass, ...rest }: Props) => {
+const Button = ({ children, typeClass, isLoading = false, ...rest }: Props) => {
   const CustomButton = getButton(typeClass);
 
-  return <CustomButton {...rest}>{children}</CustomButton>;
+  return (
+    <CustomButton disabled={isLoading} {...rest}>
+      {children}
+      {isLoading && <SpinnerContainer />}
+    </CustomButton>
+  );
 };
 
 export default Button;
