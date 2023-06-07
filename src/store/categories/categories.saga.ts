@@ -1,22 +1,20 @@
-import { takeLatest, all, call, put } from "redux-saga/effects";
+import { all, call, put, takeLatest } from "typed-redux-saga/macro";
+import { ShopData } from "../../shop-data";
 import { getCategoriesAndDocuments } from "../../utils/firebase/firebase.utils";
 import {
   fetchCategoriesFailed,
   fetchCategoriesSuccess,
 } from "./categories.action";
 import { CATEGORIES_ACTION_TYPES } from "./categories.types";
-import { DocumentData } from "firebase/firestore";
 
 export function* fetchCategoriesAsync() {
   try {
     // para aguardar a chamada utilizar o call
-    const categoriesArray: DocumentData[] = yield call(
-      getCategoriesAndDocuments
-    );
+    const categoriesArray: ShopData[] = yield call(getCategoriesAndDocuments);
 
     yield put(fetchCategoriesSuccess(categoriesArray));
   } catch (error) {
-    yield put(fetchCategoriesFailed(error));
+    yield put(fetchCategoriesFailed(error as Error));
   }
 }
 

@@ -1,6 +1,20 @@
 import { Product, ProductCart } from "../../model/product.model";
-import { createAction } from "../../utils/reducer/reducer.utils";
+import {
+  ActionWithPayload,
+  createAction,
+  withMatcher,
+} from "../../utils/reducer/reducer.utils";
 import { CART_ACTION_TYPES } from "./cart.types";
+
+export type SetCartIsOpen = ActionWithPayload<
+  CART_ACTION_TYPES.SET_IS_CART_OPEN,
+  boolean
+>;
+
+export type SetCartItems = ActionWithPayload<
+  CART_ACTION_TYPES.SET_CART_ITEMS,
+  ProductCart[]
+>;
 
 const addCartItem = (cartItems: ProductCart[], productToAdd: Product) => {
   const existingCartItem = cartItems.find(
@@ -67,5 +81,10 @@ export const clearItemFromCart = (
   return createAction(CART_ACTION_TYPES.SET_CART_ITEMS, newCartItems);
 };
 
-export const setIsCartOpen = (boolean: boolean) =>
-  createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, boolean);
+export const setIsCartOpen = withMatcher((boolean: boolean) =>
+  createAction(CART_ACTION_TYPES.SET_IS_CART_OPEN, boolean)
+);
+
+export const setCartItems = withMatcher((cartItems: ProductCart[]) =>
+  createAction(CART_ACTION_TYPES.SET_CART_ITEMS, cartItems)
+);

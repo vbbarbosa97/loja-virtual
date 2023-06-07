@@ -72,7 +72,7 @@ export const getCategoriesAndDocuments = async () => {
     docsnapshot.data()
   );
 
-  return categoryMaps;
+  return categoryMaps as ShopData[];
 };
 
 export const createUserDocumentFromAuth = async (
@@ -131,7 +131,7 @@ export const onAuthStateChangedListener = (
   return onAuthStateChanged(auth, callback);
 };
 
-export const getCurrentUser = () => {
+export const getCurrentUser = (): Promise<User | null> => {
   return new Promise((resolve, reject) => {
     const unsubscribe = onAuthStateChanged(
       auth,

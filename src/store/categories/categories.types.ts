@@ -1,7 +1,7 @@
-import { ItemShop } from "../../shop-data";
+import { ShopData } from "../../shop-data";
 
 export type Category = {
-  [key: string]: ItemShop[];
+  [key: string]: ShopData[];
 };
 
 export enum CATEGORIES_ACTION_TYPES {

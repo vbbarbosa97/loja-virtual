@@ -1,20 +1,13 @@
 import { createSelector } from "reselect";
+import { CategoriesState } from "./categories.reducer";
+import { RootState } from "../store";
 
-//TODO:adicionar interface
-const selectCategoryReducer = (state: any) => state.categories;
+const selectCategoryReducer = (state: RootState): CategoriesState =>
+  state.categories;
 
 export const selectCategories = createSelector(
   [selectCategoryReducer],
-  (categoriesSlice: any) => categoriesSlice.categories
-);
-
-export const selectCategoriesMap = createSelector(
-  [selectCategories],
-  (categories) =>
-    categories.reduce((acc: any, { title, items }: any) => {
-      acc[title.toLowerCase()] = items;
-      return acc;
-    }, {})
+  (categoriesSlice) => categoriesSlice.categories
 );
 
 export const selectCategoriesIsLoading = createSelector(

@@ -38,3 +38,6 @@ export const store = createStore(
 sagaMiddleware.run(rootSaga);
 
 export const persistor = persistStore(store);
+
+
+export type RootState = ReturnType<typeof store.getState>;
