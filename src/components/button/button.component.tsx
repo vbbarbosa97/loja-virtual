@@ -31,7 +31,7 @@ const Button = ({ children, typeClass, isLoading = false, ...rest }: Props) => {
   return (
     <CustomButton disabled={isLoading} {...rest}>
       {children}
-      {isLoading && <SpinnerContainer />}
+      {isLoading && <SpinnerContainer data-testid="loading-button" />}
     </CustomButton>
   );
 };
