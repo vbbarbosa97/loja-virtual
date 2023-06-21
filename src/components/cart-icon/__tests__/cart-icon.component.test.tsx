@@ -11,8 +11,6 @@ describe("Cart-Icon Component", () => {
 
     renderWithProviders(<CartIcon />, {
       preloadedState: {
-        categories: {} as any,
-        user: {} as any,
         cart: {
           cartItems: initialCartitem,
           isCartOpen: false,

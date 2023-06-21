@@ -27,7 +27,7 @@ const ProductCard = ({ product }: Props) => {
       </div>
 
       <Button typeClass="inverted" onClick={addProduct}>
-        Add to card
+        Add to cart
       </Button>
     </div>
   );

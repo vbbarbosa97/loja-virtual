@@ -4,10 +4,11 @@ import { AppStore, RootState } from "../store/store";
 import { RenderOptions, render } from "@testing-library/react";
 import { Provider } from "react-redux";
 import { PropsWithChildren } from "react";
-import type { PreloadedState } from '@reduxjs/toolkit'
+import type { PreloadedState } from "@reduxjs/toolkit";
+import { BrowserRouter } from "react-router-dom";
 
 interface ExtendedRenderOptions extends Omit<RenderOptions, "queries"> {
-  preloadedState?: PreloadedState<RootState>;
+  preloadedState?: PreloadedState<Partial<RootState>>;
   store?: AppStore;
 }
 
@@ -20,7 +21,11 @@ export function renderWithProviders(
   }: ExtendedRenderOptions = {}
 ) {
   function Wrapper({ children }: PropsWithChildren<{}>) {
-    return <Provider store={store}>{children}</Provider>;
+    return (
+      <Provider store={store}>
+        <BrowserRouter>{children}</BrowserRouter>
+      </Provider>
+    );
   }
 
   return { store, ...render(ui, { wrapper: Wrapper, ...renderOptions }) };
